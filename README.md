@@ -1,3 +1,5 @@
+origin: https://github.com/CarlVerret/csFastFloat
+
 # csFastFloat : a fast and accurate float parser
 [![.NET](https://github.com/CarlVerret/csFastFloat/actions/workflows/dotnet.yml/badge.svg)](https://github.com/CarlVerret/csFastFloat/actions/workflows/dotnet.yml)
 
