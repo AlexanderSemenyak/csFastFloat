@@ -5,12 +5,11 @@
     <Authors>LLC ONIT</Authors>
     <Description>C# port of Daniel Lemire's fast_float fully ported from C++ to C#. It is up to 9 times faster than the standard library in some cases while providing exact results.</Description>
     <Copyright>csFastFloat is licensed under the MIT license</Copyright>
-    <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/CarlVerret/csFastFloat</RepositoryUrl>
     <PackageTags>C# Double Float Parsing</PackageTags>
     <AssemblyVersion>4.1.4.0</AssemblyVersion>
     <FileVersion>4.1.4.0</FileVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Title>csFastFloat : a fast and accurate float parser</Title>
 
     <LangVersion>latest</LangVersion>
@@ -38,8 +37,20 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net462'">
-    <PackageReference Include="System.Memory" Version="4.5.2" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
+    <!--<PackageReference Include="System.Memory" Version="4.5.2" />-->
+    <Reference Include="System.Memory">
+	    <HintPath>..\SharedDLL\net462\System.Memory.dll</HintPath>
+	    <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Buffers">
+	    <HintPath>..\SharedDLL\net462\System.Buffers.dll</HintPath>
+	    <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors">
+	    <HintPath>..\SharedDLL\net462\System.Numerics.Vectors.dll</HintPath>
+	    <Private>False</Private>
+    </Reference>
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
