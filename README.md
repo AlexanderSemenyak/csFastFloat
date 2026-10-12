@@ -1,3 +1,27 @@
+> **Для человека.** Инструкции для ИИ-агента — [AGENTS.md](AGENTS.md) (роль: правила работы с библиотекой, инварианты, обязательный guard-паттерн вызова).
+> Правило ведения: rules/readme-agents-separation.md.
+
+## Для человека (форк Fond2019)
+
+### Статус
+Рабочий форк upstream (MIT). Цели: `net8.0;net5.0;netcoreapp3.1;net462`. Тесты — xunit.
+
+### Как запустить / проверить
+- сборка: `dotnet build csFastFloat\csFastFloat.csproj -c Release -f net462`
+- тесты: `dotnet test TestcsFastFloat\TestcsFastFloat.csproj -c Release -f net472`
+
+### Карта
+`csFastFloat/` — библиотека (`FastDoubleParser.cs`, `FastFloatParser.cs`, `Structures/`);
+`TestcsFastFloat/` — тесты (регрессы парсинга — `Basic/TestTrailingContent.cs`); `Benchmark*/` — замеры.
+
+### Владельцы
+Fond2019 / ONIT (форк); upstream — Carl Verret (csFastFloat).
+
+### Ограничения
+`TryParseDouble(string, out double)` — **prefix**-семантика (strtod), не `double.TryParse`:
+обязателен guard `characters_consumed == s.Length`. Подпись — ONIT-ключ. На `net8.0` тест `Strtod_tests`
+падает по локали (`NaN` vs `не число`).
+
 origin: https://github.com/CarlVerret/csFastFloat
 
 # csFastFloat : a fast and accurate float parser
