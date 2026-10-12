@@ -19,7 +19,8 @@ Fond2019 / ONIT (форк); upstream — Carl Verret (csFastFloat).
 
 ### Ограничения
 `TryParseDouble(string, out double)` — **prefix**-семантика (strtod), не `double.TryParse`:
-обязателен guard `characters_consumed == s.Length`. Подпись — ONIT-ключ. На `net8.0` тест `Strtod_tests`
+обязателен guard `characters_consumed == s.Length`. Подпись — ONIT-ключ (`csFastFloat/StrongNameKey.snk`,
+**в репозиторий не входит**, `*.snk` в `.gitignore` — положить перед сборкой). На `net8.0` тест `Strtod_tests`
 падает по локали (`NaN` vs `не число`).
 
 origin: https://github.com/CarlVerret/csFastFloat
