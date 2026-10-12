@@ -1,32 +1,46 @@
 name: .NET
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET 3.1
-      uses: actions/setup-dotnet@v1
+
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 3.1.x
-    - name: Setup .NET 5.0
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
-    - name: Setup .NET 8.0
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 8.0.x
-        
+        dotnet-version: |
+          8.0.x
+          9.0.x
+
+    - name: Install Mono (for .NET Framework 4.7.2 test host)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y mono-complete
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Build
-      run: dotnet build --no-restore
-    
+      run: dotnet build --no-restore  --configuration Release -p:ContinuousIntegrationBuild=true
+
     - name: Unit tests
-      run: dotnet test  --verbosity m --no-build 
+      run: dotnet test --no-build --configuration Release --verbosity m
       continue-on-error: false
 
-    
+    - name: Publish packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: packages
+        path: '**/*.*nupkg'
