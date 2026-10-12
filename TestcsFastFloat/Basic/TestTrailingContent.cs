@@ -102,14 +102,13 @@ namespace TestcsFastFloat.Tests.Basic
     }
 
     /// <summary>
-    /// Desired (BCL-matching) behaviour for the non-consuming overload.
-    /// Kept skipped so the suite stays green until the defect is fixed or the overload is
-    /// documented/changed with owner approval (public API semantics change).
+    /// Документирующий тест: поведение, эквивалентное BCL (<c>double.TryParse</c>).
+    /// НЕ включён — решение владельца (2026-10-12): семантику библиотеки не менять (breaking),
+    /// guard применяется в потребителе. Служит описанием желаемого поведения, а не планом правки.
     /// </summary>
-    [Fact(Skip = "Known defect: the non-consuming TryParseDouble ignores trailing content. " +
-                 "Un-skip once the overload requires full-string consumption (BCL semantics).")]
+    [Fact(Skip = "Documented desired behavior (BCL parity). Not enabled: owner decision 2026-10-12 — keep strtod semantics, guard in consumer.")]
     [Trait("Category", "Defect")]
-    public void TryParseDouble_NonConsuming_ShouldRejectTrailingContent_LikeBcl()
+    public void TryParseDouble_NonConsuming_DocumentsDesiredBclParity_NotEnabled()
     {
       Assert.False(FastDoubleParser.TryParseDouble("17.9.2026 12:18", out _, NumberStyles.Float, ','));
       Assert.False(FastDoubleParser.TryParseDouble("12abc", out _));

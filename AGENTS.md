@@ -4,7 +4,7 @@
 # Fond2009.Shared.csFastFloat — AGENTS.md
 
 **Тип:** shared-библиотека Fond2019 — быстрый корректно-округлённый парсер `float`/`double`
-(порт Lemire `fast_float`, MIT).
+(порт Lemire `fast_float`, MIT). Пакет: `Fond2009.Shared.csFastFloat`.
 **Upstream:** https://github.com/CarlVerret/csFastFloat
 **Наш форк (GitHub):** https://github.com/AlexanderSemenyak/csFastFloat
 **МАП (алгоритм/цикл, математика, проблемы, плюсы, использование):**
@@ -28,8 +28,8 @@
 | ID | Инвариант (нарушение = дефект) |
 |----|-------------------------------|
 | X-1 | **Подпись.** Библиотека, тесты и Benchmark подписаны **ONIT-ключом** `csFastFloat/StrongNameKey.snk` (public key `0024…bba0148c…`, token `6f5d2a7dac106d62`); `InternalsVisibleTo` в `csFastFloat/AssemblyInfo.cs` ссылается на этот ключ. В `TestcsFastFloat.csproj` / `Benchmark.csproj` — **относительный** путь `..\csFastFloat\StrongNameKey.snk`. Абсолютные пути ключа (напр. `D:\…`) запрещены. |
-| X-2 | **Prefix-семантика (ловушка).** `TryParseDouble(string, out double)` работает как `strtod`: берёт **длиннейший числовой префикс** и игнорирует хвост. Это **НЕ** `double.TryParse` (BCL требует всю строку). Поведение документировано в README. |
-| X-3 | **Guard обязателен.** В потребителе использовать overload с `characters_consumed` и проверять `characters_consumed == s.Length`. Эталон — `HelperTelemetry.cs:4623,4629`. |
+| X-2 | **Prefix-семантика (ловушка).** `TryParseDouble(string, out double)` работает как `strtod`: берёт **длиннейший числовой префикс** и игнорирует хвост. Это **НЕ** `double.TryParse` (BCL требует всю строку). Поведение документировано в README. Хвостовые пробелы: `AllowTrailingWhite` допускает пробелы после числа, но `characters_consumed` их может не поглощать (`"  42  "` → consumed=4 из 6). |
+| X-3 | **Guard обязателен.** Использовать overload с `characters_consumed` и проверять полное потребление. Перегрузки БЕЗ `characters_consumed` (`out double`) не позволяют применить guard → **в продуктовом коде запрещены**. ⚠️ Сравнивать с длиной после отбрасывания хвостовых пробелов (`AllowTrailingWhite`), иначе валидное число молча уйдёт в fallback. Fallback `ParseDoubleSimple()` — проверить, что он сам не разбирает префикс (риск R-3). Эталон — `HelperTelemetry.cs:4623,4629`. |
 | X-4 | **net462.** Путь скалярный (без `HAS_INTRINSICS`/SSE4.1) — корректность та же, скорость ниже. |
 | X-5 | **Правки `.cs`/`.csproj`** — только по явному запросу; для C#-субагента обязателен F-CODERULES-INJECT. |
 
